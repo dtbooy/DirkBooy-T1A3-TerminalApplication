@@ -1,5 +1,6 @@
 #----------------------------------------------------------------------|
-#imports
+# Imports
+# random module used to randomise question selection & shuffle answers
 import random
 
 def question_selector(topic_questions: list) -> list:
@@ -14,7 +15,7 @@ def question_selector(topic_questions: list) -> list:
         ten_questions.append(
             topic_questions.pop(
                 random.randint(0, len(topic_questions) - 1)))
-    # print(g[q[0] for q in ten_questions])  # --> DEBUG
+    # print(g[q[0] for q in ten_questions])  # ----------------------------------> DEBUG
     return ten_questions
 
 def ask_question(question: list, q_num: int) -> int:
@@ -34,35 +35,63 @@ def ask_question(question: list, q_num: int) -> int:
     # print answers to terminal  - shuffled & each printed on a line 
         print(f"{chr(ord('A') + i)}: {ans}")
 
-    # return index integer of correct answer (A=0, B=1, C=2, D=3)
-    return ans_list.index(question[1])
+    # Return index integer of correct answer (A=1, B=2, C=3, D=4).
+    # Note: +1 is added to account for in Q&A list index 0 is Question. 
+    # print(ans_list.index(question[1]) + 1)              #    ---------------------> DEBUG
+    return ans_list.index(question[1]) + 1
 
 
-def get_valid_answer():
+def get_valid_answer() -> int:
     """
     Gets answer from user. Confirms valid input. On invalid response 
     prompts user for valid answer until valid answer given.
-    Returns valid input as answer integer (A=0, B=1, C=2, D=3)
+    Returns valid input as answer integer (A=1, B=2, C=3, D=4)
     """
-    pass 
-#current location
-########################################################################
-
+     while True:
+        answer = input("Enter your selection: ")
+        match answer.lower():
+            case "a" | "1":
+                return 1
+            case "b" | "2":
+                return 2
+            case "c" | "3":
+                return 3
+            case "d" | "4":
+                return 4
+            case _:
+                print(
+                    "Invalid selection \n"
+                    "Selection must be in the form A, B, C, D or "
+                    "1, 2, 3, 4"
+                    )
 
 
 def quiz_round(questions_list: list):
     """takes a list of 10 questions and plays the quiz"""
-    pass            # DEBUG - skip below code until finished
+#    pass            #  skip below code until finished       ---------------------> DEBUG
+    # reset score counter
+    round_score = 0
+
     for index, question in enumerate(questions_list):
         # Display user Question
         ans_loc = ask_question(question, index + 1)
+
         # Get response from user
         user_resp = get_valid_answer()
+
         # Check - is user correct- if so give a point
+        if ans_loc == user_resp:
+            round_score += 1
+            print("Correct! Well Done!")
+            print(ans_loc)
+
         # Display the correct answer & feedback to user 
-        #######CODE GOES HERE######
-        # Press enter to continue
-        # Clear screen 
+        print(f"The correct answer was: {question[1]}")
+
+        # press enter to continue
+        
+        # Clear screen for next question
+
         #EOL
 
 
@@ -80,7 +109,7 @@ q_list = [
      for i in range(100)
      ]
 
-q = question_selector(q_list)
+q = quiz_round(question_selector(q_list))
 #print(q)
 ask_question(q[0], 1)
 
