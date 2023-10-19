@@ -2,6 +2,23 @@
 # Imports
 # random module used to randomise question selection & shuffle answers
 import random
+# os module used to detect Operating System & clear terminal screen 
+import os 
+# time module used for delay timing 
+# may also be used for timeout of questions and scoring   --------------------->  DEBUG
+import time
+
+def clear_screen():
+    """
+    Detects Ooperating systems and uses appropriate command to clear 
+    the terminal screen 
+    """
+    # Windows: os.name == nt, sys clear command is "cls"
+    if os.name == 'nt':
+        os.system("cls")
+     # Linux: os.name == 'posix', sys clear command is "clear"
+    else:
+        os.system("clear")
 
 def question_selector(topic_questions: list) -> list:
     """
@@ -15,7 +32,7 @@ def question_selector(topic_questions: list) -> list:
         ten_questions.append(
             topic_questions.pop(
                 random.randint(0, len(topic_questions) - 1)))
-    # print(g[q[0] for q in ten_questions])  # ----------------------------------> DEBUG
+    # print([q[0] for q in ten_questions])  # ----------------------------------> DEBUG
     return ten_questions
 
 def ask_question(question: list, q_num: int) -> int:
@@ -47,7 +64,7 @@ def get_valid_answer() -> int:
     prompts user for valid answer until valid answer given.
     Returns valid input as answer integer (A=1, B=2, C=3, D=4)
     """
-     while True:
+    while True:
         answer = input("Enter your selection: ")
         match answer.lower():
             case "a" | "1":
@@ -68,12 +85,13 @@ def get_valid_answer() -> int:
 
 def quiz_round(questions_list: list):
     """takes a list of 10 questions and plays the quiz"""
-#    pass            #  skip below code until finished       ---------------------> DEBUG
     # reset score counter
     round_score = 0
 
     for index, question in enumerate(questions_list):
-        # Display user Question
+        
+        
+        # Display Question
         ans_loc = ask_question(question, index + 1)
 
         # Get response from user
@@ -88,10 +106,10 @@ def quiz_round(questions_list: list):
         # Display the correct answer & feedback to user 
         print(f"The correct answer was: {question[1]}")
 
-        # press enter to continue
-        
+        # wait 3 seconds before next question starts
+        time.sleep(3)
         # Clear screen for next question
-
+        clear_screen()
         #EOL
 
 
@@ -109,8 +127,10 @@ q_list = [
      for i in range(100)
      ]
 
+#start a round 
 q = quiz_round(question_selector(q_list))
-#print(q)
-ask_question(q[0], 1)
+# question_selector(q_list)
+#test the ask_question function
+#ask_question(q[0], 1)
 
     
