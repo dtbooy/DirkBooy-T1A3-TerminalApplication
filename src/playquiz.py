@@ -8,9 +8,9 @@ import os
 # may also be used for timeout of questions and scoring   --------------------->  DEBUG
 import time
 
-def clear_screen():
+def clear_screen() -> None:
     """
-    Detects Ooperating systems and uses appropriate command to clear 
+    Detects Operating System and selects appropriate command to clear 
     the terminal screen 
     """
     # Windows: os.name == nt, sys clear command is "cls"
@@ -25,14 +25,15 @@ def question_selector(topic_questions: list) -> list:
     Get a random selection of 10 questions from input parameter
     topic_questions. Return list of 10 questions.
     """
+ #-----------Add error catcher for >10 questions------------------------------>DEBUG
     ten_questions = []
-    for i in range (10):    
+    for i in range (min(10, len(topic_questions))):    
         # Select a random question from topic_questions, pop it out and 
-        # add it to the ten_questions list
+        # add it to the ten_questions list.
+        # if topic_question list < 10 select <10 questions 
         ten_questions.append(
             topic_questions.pop(
                 random.randint(0, len(topic_questions) - 1)))
-    # print([q[0] for q in ten_questions])  # ----------------------------------> DEBUG
     return ten_questions
 
 def ask_question(question: list, q_num: int) -> int:
@@ -83,16 +84,16 @@ def get_valid_answer() -> int:
                     )
 
 
-def quiz_round(questions_list: list):
+def quiz_round(topic_questions_list: list):
     """takes a list of 10 questions and plays the quiz"""
     # reset score counter
     round_score = 0
+    #get round questions
+    questions_list = question_selector(topic_questions_list)
 
     for index, question in enumerate(questions_list):
-        
-        
         # Display Question
-        ans_loc = ask_question(question, index + 1)
+        ans_loc = ask_question(question, index)
 
         # Get response from user
         user_resp = get_valid_answer()
@@ -102,35 +103,27 @@ def quiz_round(questions_list: list):
             round_score += 1
             print("Correct! Well Done!")
             print(ans_loc)
-
-        # Display the correct answer & feedback to user 
-        print(f"The correct answer was: {question[1]}")
-
-        # wait 3 seconds before next question starts
-        time.sleep(3)
+        else:
+            print("Wrong answer!") 
+            print(f"The correct answer was: {question[1]}")
+        # wait before next question starts
+        time.sleep(2)
         # Clear screen for next question
         clear_screen()
-        #EOL
+    #End of Quiz display results
+    if round_score == 10:
+        #print a special message for getting 10/10
+        print(
+            "    ________            ________          ___________\n"
+            "    ___  __ \______________  __/____________  /___  /\n"
+            "    __  /_/ /  _ \_  ___/_  /_ _  _ \  ___/  __/_  /\n"
+            "    _  ____//  __/  /   _  __/ /  __/ /__ / /_  /_/ \n"
+            "    /_/     \___//_/    /_/    \___/\___/ \__/ (_) \n\n\n"
+            )
+    print(f"You scored {round_score} / {len(questions_list)}!")
 
 
 
 
-#------------------------Test-runs-------------------------------------|
-
-#create a list of template questions
-q_list = [
-    ["Question " + str(i+1), 
-     "Right answer1", 
-     "Wrong answer2", 
-     "Wrong answer3", 
-     "Wrong answer4"] 
-     for i in range(100)
-     ]
-
-#start a round 
-q = quiz_round(question_selector(q_list))
-# question_selector(q_list)
-#test the ask_question function
-#ask_question(q[0], 1)
 
     
