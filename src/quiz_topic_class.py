@@ -6,6 +6,8 @@ Module to hand file handling for Quiz Terminal Application
 import playquiz
 # csv module used to read / write quiz question files
 import csv
+# os used to get directory list
+import os
 # pyinputplus module used to
 import pyinputplus as pyip
 
@@ -24,7 +26,11 @@ import pyinputplus as pyip
     #     self.filename = topic[1]
     #     self.question_list = self.get_questions(self.filename)
     
-def get_questions(self, filename):
+def get_questions(quiz_title):
+    # filename = (
+    #     "./quiz_data/quiz_" + 
+    #     quiz_title.lower().replace(" ", "_") + 
+    #     ".csv")
     # doublecheck file exists
     # Read csv file
     # format output to question_list
@@ -89,17 +95,18 @@ def delete_question():
     # (or detele q in q_list & overwrite file)
     pass
         
-def get_available_topics():
+def get_available_topics() -> list:
     # Read files in quiz directory
-    # Filter files by end in ".csv" and start with "quiz_"
-    # Create name strings from file list
-        # remove "quiz_"
-        # remove ".csv" 
-        # split into list via "_"
-        # Capitalise first letters "str"[0].upper 
-        # recombine wordlist into name
-    # append to list "Topic_list"
-    pass
+    dir_list = os.listdir("./quiz_data")
+    quiz_list = []
+    for file in dir_list:
+        # Filter files by end in ".csv" and start with "quiz_"
+        if file.endswith(".csv") and file.startswith("quiz_"):
+            #Format as title & add to list
+            quiz_list.append(str(file[5:-4]).replace("_", " ").title())
+
+    print(quiz_list)
+    return quiz_list
 
 def new_quiz_name(topic_list: str) ->str:
     # Need to compare against existing quiz list too consider making function ------> DEBUG
@@ -161,6 +168,6 @@ def new_quiz_topic(topic_list) -> None:
 #      ]
 
 # new_question("5 test Questions")
-new_quiz_topic(["test quiz 1"])
-
+# new_quiz_topic(["test quiz 1"])
+print(get_available_topics())
 #write_to_file(q_list, "10000 Test Questions")
