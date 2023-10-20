@@ -19,13 +19,14 @@ def clear_screen() -> None:
      # Linux: os.name == 'posix', sys clear command is "clear"
     else:
         os.system("clear")
+    #-----------------Add decorative heading to cleared screen -------------------->DEBUG
+
 
 def question_selector(topic_questions: list) -> list:
     """
     Get a random selection of 10 questions from input parameter
     topic_questions. Return list of 10 questions.
     """
- #-----------Add error catcher for >10 questions------------------------------>DEBUG
     ten_questions = []
     for i in range (min(10, len(topic_questions))):    
         # Select a random question from topic_questions, pop it out and 
@@ -55,7 +56,6 @@ def ask_question(question: list, q_num: int) -> int:
 
     # Return index integer of correct answer (A=1, B=2, C=3, D=4).
     # Note: +1 is added to account for in Q&A list index 0 is Question. 
-    # print(ans_list.index(question[1]) + 1)              #    ---------------------> DEBUG
     return ans_list.index(question[1]) + 1
 
 
@@ -85,7 +85,7 @@ def get_valid_answer() -> int:
 
 
 def quiz_round(topic_questions_list: list):
-    """takes a list of 10 questions and plays the quiz"""
+    """Quiz handler: runs a round of quiz questions and tracks score"""
     # reset score counter
     round_score = 0
     #get round questions
