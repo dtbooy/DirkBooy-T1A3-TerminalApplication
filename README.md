@@ -34,7 +34,7 @@ New topic will save a new quiz file - user will need to add at least 10 question
 
 ### Application navigation
 Navigation chains for the program will be as follows:
-* New quiz
+* Play quiz
     * Topic selection --> start quiz
 * Edit quiz
     * Add new quiz topic --> start new quiz & question add function
@@ -45,6 +45,7 @@ Navigation chains for the program will be as follows:
 * Help
     * How to play --> displays help topic
     * How to edit --> displays help topic
+* Credits --> Displays Credits
 * Quit --> terminates program
 
 ### Product Testing
@@ -73,17 +74,26 @@ To view the to implementation plan on MS Planner follow this link: [https://task
 The features have been broken down into component cards, each has been assigned a priority and a planned completion date. As the project matures the prioirities and forecast completion dates of individual elements will change.
 
 ### Screenshots of plan over course of project
-19 October 2023: 
+#### 19 October 2023: 
+Project Board
 ![2023/10/19 Project Board](./docs/20231019-board.png)
+Project Status Chart
 ![2023/10/19 Project Status Chart](./docs/20231019-chart.png)
+Daily task cards
 ![2023/10/19 My cards Status](./docs/20231019-mytasks.png)
-20 October 2023:
-21 October 2023:
-22 October 2023:
-23 October 2023:
-24 October 2023:
-25 October 2023:
-26 October 2023:
+#### 20 October 2023:
+Project Board
+![2023/10/20 Project Board](./docs/20231019-board.png)
+Project Status Chart
+![2023/10/20 Project Status Chart](./docs/20231019-chart.png)
+Daily task cards
+![2023/10/20 My cards Status](./docs/20231019-mytasks.png)
+#### 21 October 2023:
+#### 22 October 2023:
+#### 23 October 2023:
+#### 24 October 2023:
+#### 25 October 2023:
+#### 26 October 2023:
 
 
 ## Help Documentation
