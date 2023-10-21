@@ -11,33 +11,33 @@ import os
 # pyinputplus module used to
 import pyinputplus as pyip
 
-# class QuizTopic():
-#     """
-#     Class to hold and manipulate Quiz topic questions
-#     Methods to: 
-#     get question_list from file
-#     add questions to list & file
-#     remove questions to list & file
-#     save
-#     """
-#     # def __init__(self, topic: tuple) -> None:
-#     #     # parameter topic will be tuple of (topic:str, filename:str) 
-#     #     self.topic = topic[0]
-    #     self.filename = topic[1]
-    #     self.question_list = self.get_questions(self.filename)
-    
-def get_questions(quiz_title):
-    # filename = (
-    #     "./quiz_data/quiz_" + 
-    #     quiz_title.lower().replace(" ", "_") + 
-    #     ".csv")
-    # doublecheck file exists
-    # Read csv file
-    # format output to question_list
-    # return question_list
-    pass
+def get_available_topics_from_dir() -> list:
+    # Read files in quiz directory
+    dir_list = os.listdir("./quiz_data")
+    quiz_list = []
+    for file in dir_list:
+        # Filter files by end in ".csv" and start with "quiz_"
+        if file.endswith(".csv") and file.startswith("quiz_"):
+            #Format as title & add to list
+            quiz_list.append(str(file[5:-4]).replace("_", " ").title())
 
-def write_question() -> list:
+    print(quiz_list)
+    return quiz_list
+
+def get_question_list_from_file(quiz_title: str) -> list:
+    filename = (
+        "./quiz_data/quiz_" + 
+        quiz_title.lower().replace(" ", "_") + 
+        ".csv")
+    question_list = []
+    with open(filename, 'r') as f:
+        reader = csv.reader(f)
+        reader.__next__() # Skip the first row (the column names)
+        for row in reader:
+            question_list.append(row)
+    return question_list
+
+def get_user_input_new_question() -> list:
     """
     Prompts user through writing a question. 
     Output is a question-answers list in the format [Q,CA,WA,WA,WA] 
@@ -68,10 +68,10 @@ def write_question() -> list:
                 return
 
     
-def new_question(topic: str) -> None:
-    """Gets new quesastion, and appends it to topic file"""
+def write_new_question_to_file(topic: str) -> None:
+    """Gets new question, and appends it to topic file"""
     # Get question from user
-    question = write_question()
+    question = get_user_input_new_question()
     # Convert topic to filename 
     filename = (
         "./quiz_data/quiz_" + 
@@ -83,30 +83,31 @@ def new_question(topic: str) -> None:
         writer.writerows([question])
     return
 
-
-
-
-def delete_question():
+def delete_question(topic: str) -> None:
     # display list of questions (numbered)
-    # select question number to delete
-    # display q & a for selected q
-    # confirmation of deletion
-    # use q index to delete line in csv 
-    # (or detele q in q_list & overwrite file)
-    pass
-        
-def get_available_topics() -> list:
-    # Read files in quiz directory
-    dir_list = os.listdir("./quiz_data")
-    quiz_list = []
-    for file in dir_list:
-        # Filter files by end in ".csv" and start with "quiz_"
-        if file.endswith(".csv") and file.startswith("quiz_"):
-            #Format as title & add to list
-            quiz_list.append(str(file[5:-4]).replace("_", " ").title())
+    question_list = get_question_list_from_file(topic)
 
-    print(quiz_list)
-    return quiz_list
+    # print out all questions in numbered list
+    print(f"Questions in {topic}:")
+    for i, question in enumerate(question_list):
+        print(f"{i+1}. {question}[0]")
+
+    # select question number to delete
+    del_q_index = pyip.inputInt("Select question number to delete :",min=1, max=len(question_list)) -1
+    # display q & a for selected q
+    playquiz.clear_screen()
+    playquiz.ask_question(question_list[del_q_index], del_q_index)    
+    # confirmation of deletion
+    if pyip.inputYesNo("Is this the question you want to delete? [Y/N]") ==  "yes":
+        # use q index to delete line in csv 
+        ########################CODE GO HERE ######################### ---------------->DEBUG
+        # (or detele q in q_list & overwrite file)
+        print("Question deleted successfully")
+    else:
+        print("Cancelled deletion!")
+    
+        
+
 
 def new_quiz_name(topic_list: str) ->str:
     # Need to compare against existing quiz list too consider making function ------> DEBUG
@@ -129,7 +130,7 @@ def new_quiz_topic(topic_list) -> None:
     next_question = True
     while next_question == True:
         # Get question from user
-        success = write_question()
+        success = get_user_input_new_question()
         # If write_question was succesful append to list
         if success != None:
             question_list.append(success)
@@ -169,5 +170,6 @@ def new_quiz_topic(topic_list) -> None:
 
 # new_question("5 test Questions")
 # new_quiz_topic(["test quiz 1"])
-print(get_available_topics())
+print(get_question_list_from_file(get_available_topics_from_dir()[0])[0])
 #write_to_file(q_list, "10000 Test Questions")
+delete_question("5 test questions")
