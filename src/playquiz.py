@@ -22,8 +22,6 @@ def clear_screen() -> None:
      # Linux: os.name == 'posix', sys clear command is "clear"
     else:
         os.system("clear")
-    #-----------------Add decorative heading to cleared screen -------------------->DEBUG
-
 
 def question_selector(topic_questions: list) -> list:
     """
@@ -32,7 +30,7 @@ def question_selector(topic_questions: list) -> list:
     """
     ten_questions = []
     for i in range (min(10, len(topic_questions))):    
-        # Select a random question from topic_questions, pop it out and 
+        # Select a random question from topic_questions, pop it out and
         # add it to the ten_questions list.
         # if topic_question list < 10 select <10 questions 
         ten_questions.append(
@@ -58,7 +56,7 @@ def ask_question(question: list, q_num: int) -> int:
         print(f"{chr(ord('A') + i)}: {ans}")
 
     # Return index integer of correct answer (A=1, B=2, C=3, D=4).
-    # Note: +1 is added to account for in Q&A list index 0 is Question. 
+    # Note: +1 is added to account for in Q&A list index 0 is Question.
     return ans_list.index(question[1]) + 1
 
 def get_valid_answer() -> int:
@@ -85,7 +83,6 @@ def get_valid_answer() -> int:
                     "1, 2, 3, 4"
                     )
 
-
 def print_title(title):
     clear_screen()
     print("-" * 43)
@@ -98,7 +95,8 @@ def quiz_round(topic: str):
     # reset score counter
     round_score = 0
         # get question list
-    topic_questions_list = file_handling.get_question_list_from_file(topic)
+    topic_questions_list = (
+        file_handling.get_question_list_from_file(topic))
 
     #get round questions
     round_questions = question_selector(topic_questions_list)
