@@ -3,6 +3,8 @@
 Main Loop for Terminal application
 """
 import playquiz # quiz module playquiz.py
+import file_handling # handles read/write to file
+import pyinputplus as pyip
 
 def menu_select(menu_items: list) -> int:
     """Get valid user selection from menu. Return menu list index"""
@@ -12,7 +14,7 @@ def menu_select(menu_items: list) -> int:
             print(f"{i+1}. {option}")
         
         # Get user input
-        selection = input("Enter selection: ").lower()
+        selection = input("\nEnter selection: ").lower()
 
         try:
             # Check if entered a valid integer, return menu index
@@ -40,21 +42,29 @@ def menu_select(menu_items: list) -> int:
 def main():
     """Main navigation loop"""
     #Add static menu items to lists
-    top_level_menu = ["Play", "Edit Quiz", "Help", "Credits", "Quit"]
-    edit_menu = ["Edit Quiz", "New Quiz Topic"]
+    top_level_menu = ["Play", "Edit Mode", "Help", "Credits", "Quit"]
+    edit_menu = ["Edit Existing Quiz", "Create New Quiz"]
     help_menu = ["How to Play", "How to Edit"]
-
+    topic_list = file_handling.get_available_topics_from_dir()
     while True:
-        print("Welcome message") # Update to something fancy - maybe add a Title decorator?----> DEBUG
+        playquiz.print_title("Welcome message") # Update to something fancy - maybe add a Title decorator?----> DEBUG
         choice = menu_select(top_level_menu)
         match choice:
             case 0:
                 print("Play")
-                break #  ---------------------------------------------------------->DEBUG
+                play(topic_list)
             case 1:
                 print("Edit")
+                playquiz.print_title("Edit Options")
                 choice = menu_select(edit_menu)
-                break #  ---------------------------------------------------------->DEBUG
+                #new create new quiz
+                if choice == 1:
+                    file_handling().new_quiz_topic(topic_list)
+                #edit existing quiz
+                else:
+                    edit(topic_list)
+                    
+                 #  ---------------------------------------------------------->DEBUG
             case 2:
                 print("Help")
                 choice = menu_select(help_menu)
@@ -63,12 +73,51 @@ def main():
                 print("Credits")
                 break #  ---------------------------------------------------------->DEBUG
             case 4:
-                print("Goodbye! Thanks for playing")
+                playquiz.print_title("Goodbye! Thanks for playing")
                 break
-        
+
+
+def play(topic_list):
+    # Quiz topic selection
+    playquiz.print_title("Select a quiz")
+    print(f"Please select a Quiz topic:")
+    topic_index = select_topic(topic_list)
+    # send list to playquiz.quiz_round 
+    playquiz.quiz_round(topic_list[topic_index])
+
+
+
+def edit(topic_list):
+    edit_quiz_menu = ["Add Question", "Delete Question"]
+    # Select quiz to edit    
+    playquiz.print_title("Select quiz to edit")
+    topic_index = select_topic(topic_list)
+
+    playquiz.print_title("Add or Delete a question?")
+    if menu_select(edit_quiz_menu) == 0:
+        # launch question writed function
+        file_handling.write_new_question_to_file(topic_list[topic_index])
+    else:
+        #launch delete question function
+        file_handling.delete_question(topic_list[topic_index])
+
+def help():
+    pass
+
+def credits():
+    pass
+
+def select_topic(topic_list: list) -> int:
+    for i, topic in enumerate(topic_list):
+        print(f"{i+1}. {topic}")    
+    # return user choice as # index in topic_list
+    return pyip.inputInt("\nSelect topic number:",min=1, max=len(topic_list)) -1
+    
+
+    
 main()
 #----------------------------------------------------------------------|
 #TESTING
-
+# select_topic(file_handling.get_available_topics_from_dir())
 
 # menu_select(["Play", "Edit Quiz", "Help", "Credits", "Quit"])

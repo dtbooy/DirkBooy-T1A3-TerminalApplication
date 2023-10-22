@@ -10,6 +10,8 @@ import csv
 import os
 # pyinputplus module used to
 import pyinputplus as pyip
+# getpass used to hide user input when asked to press enter to continue
+import getpass 
 
 def get_available_topics_from_dir() -> list:
     # Read files in quiz directory
@@ -20,8 +22,6 @@ def get_available_topics_from_dir() -> list:
         if file.endswith(".csv") and file.startswith("quiz_"):
             #Format as title & add to list
             quiz_list.append(str(file[5:-4]).replace("_", " ").title())
-
-    print(quiz_list)
     return quiz_list
 
 def get_question_list_from_file(quiz_title: str) -> list:
@@ -63,13 +63,17 @@ def get_user_input_new_question() -> list:
             return question
         else:
             print("Question discarded!\n")
+            # Repeat while loop if user wants to try again, otherwise
+            # return to menu
+            #############ADD AN EDIT Q A A A A option here if time ##################################### -------------DEBUG
             if pyip.inputYesNo(
                 "\n would you like to try again?") == "no":
-                return
+                return None
+            ########NEED to catch this - perhaps it should raise an error ---------------------------------->DEBUG
 
     
 def write_new_question_to_file(topic: str) -> None:
-    """Gets new question, and appends it to topic file"""
+    """Procedure: Gets new question, and appends it to topic file"""
     # Get question from user
     question = get_user_input_new_question()
     # Convert topic to filename 
@@ -81,10 +85,11 @@ def write_new_question_to_file(topic: str) -> None:
     with open(filename, 'a', newline='') as f:
         writer = csv.writer(f) 
         writer.writerows([question])
-    return
+    print("Success! Question added!")
+    getpass.getpass("Press Enter to continue...")
 
 def delete_question(topic: str) -> None:
-    # display list of questions (numbered)
+    # Get list of questions in topic
     question_list = get_question_list_from_file(topic)
 
     # print out all questions in numbered list
@@ -99,13 +104,14 @@ def delete_question(topic: str) -> None:
     playquiz.ask_question(question_list[del_q_index], del_q_index)    
     # confirmation of deletion
     if pyip.inputYesNo("Is this the question you want to delete? [Y/N]") ==  "yes":
-        # use q index to delete line in csv 
-        ########################CODE GO HERE ######################### ---------------->DEBUG
-        # (or detele q in q_list & overwrite file)
+        # remove question from question_list
+        question_list.remove(question_list[del_q_index])
+        # write question_list to file
+        write_full_quiz_to_file(topic, question_list)
         print("Question deleted successfully")
     else:
         print("Cancelled deletion!")
-    
+    getpass.getpass("Press Enter to continue...")
         
 
 
@@ -140,6 +146,13 @@ def new_quiz_topic(topic_list) -> None:
     # If user hasn't entered anything return to menu loop
     if question_list == []:
         return
+    # Save quizz to file
+    write_full_quiz_to_file(topic, question_list)
+    playquiz.clear_screen()
+    print("Success! New quiz was created")
+    getpass.getpass("Press Enter to continue...")
+
+def write_full_quiz_to_file(topic, question_list):
     # Convert topic to filename 
     filename = "./quiz_data/quiz_" + topic.lower().replace(" ", "_") + ".csv"
     with open(filename, 'w') as f: # Open file for writing
@@ -152,9 +165,8 @@ def new_quiz_topic(topic_list) -> None:
                 "Wrong Answer 2",
                 "Wrong Answer 3"]) # Write the header row first
         writer.writerows(question_list)
-        playquiz.clear_screen()
-        print("Success! New quizz was created")
-    return
+
+
 
 
 #   Tests 
@@ -170,6 +182,6 @@ def new_quiz_topic(topic_list) -> None:
 
 # new_question("5 test Questions")
 # new_quiz_topic(["test quiz 1"])
-print(get_question_list_from_file(get_available_topics_from_dir()[0])[0])
+# print(get_question_list_from_file(get_available_topics_from_dir()[0])[0])
 #write_to_file(q_list, "10000 Test Questions")
-delete_question("5 test questions")
+# delete_question("5 test questions")

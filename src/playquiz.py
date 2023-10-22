@@ -1,5 +1,6 @@
 #----------------------------------------------------------------------|
 # Imports
+import file_handling
 # random module used to randomise question selection & shuffle answers
 import random
 # os module used to detect Operating System & clear terminal screen 
@@ -7,6 +8,8 @@ import os
 # time module used for delay timing 
 # may also be used for timeout of questions and scoring   --------------------->  DEBUG
 import time
+# getpass used to hide user input when asked to press enter to continue
+import getpass 
 
 def clear_screen() -> None:
     """
@@ -58,7 +61,6 @@ def ask_question(question: list, q_num: int) -> int:
     # Note: +1 is added to account for in Q&A list index 0 is Question. 
     return ans_list.index(question[1]) + 1
 
-
 def get_valid_answer() -> int:
     """
     Gets answer from user. Confirms valid input. On invalid response 
@@ -84,14 +86,24 @@ def get_valid_answer() -> int:
                     )
 
 
-def quiz_round(topic_questions_list: list):
+def print_title(title):
+    clear_screen()
+    print("-" * 43)
+    padding = max(int((43 - len(title) - 2)/2),0)
+    print("#" * padding, title, "#" * padding  )
+    print("-" * 43, "\n")
+
+def quiz_round(topic: str):
     """Quiz handler: runs a round of quiz questions and tracks score"""
     # reset score counter
     round_score = 0
-    #get round questions
-    questions_list = question_selector(topic_questions_list)
+        # get question list
+    topic_questions_list = file_handling.get_question_list_from_file(topic)
 
-    for index, question in enumerate(questions_list):
+    #get round questions
+    round_questions = question_selector(topic_questions_list)
+    for index, question in enumerate(round_questions):
+        print_title(topic)
         # Display Question
         ans_loc = ask_question(question, index)
 
@@ -120,7 +132,8 @@ def quiz_round(topic_questions_list: list):
             "    _  ____//  __/  /   _  __/ /  __/ /__ / /_  /_/ \n"
             "    /_/     \___//_/    /_/    \___/\___/ \__/ (_) \n\n\n"
             )
-    print(f"You scored {round_score} / {len(questions_list)}!")
+    print(f"You scored {round_score} / {len(round_questions)}!")
+    getpass.getpass("Press Enter to continue...")
 
 
 
