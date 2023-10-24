@@ -1,4 +1,19 @@
 import playquiz
+import pytest
+
+#----------
+# functions in playqiz.py
+## clear_screen() ---> process
+## question_selectior(topic_questions) 
+## ask_question(question, q_num)
+## get_valid_answer()
+## print_title()
+## quiz_round()
+
+pytest
+def ask_question(question, q_num):
+    pass
+
 
 #------------------------Test-runs-------------------------------------|
 
@@ -21,3 +36,6 @@ import playquiz
 topic = ""
 while topic == None or (topic.replace(" ", "").isalnum() == False):
     topic = input("what si topic?")
+
+
+

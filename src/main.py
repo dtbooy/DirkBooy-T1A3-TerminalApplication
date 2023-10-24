@@ -46,7 +46,7 @@ def main() -> None:
     #Add static menu items to lists
     top_level_menu = ["Play", "Edit Mode", "Help", "Credits", "Quit"]
     edit_menu = ["Edit Existing Quiz", "Create New Quiz"]
-    topic_list = file_handling.get_available_topics_from_dir()
+    topic_list = file_handling.get_topics_from_directory()
     while True:
         playquiz.print_title("Welcome message") # Update to something fancy - maybe add a Title decorator?----> DEBUG
         choice = menu_select(top_level_menu)
@@ -54,7 +54,6 @@ def main() -> None:
             case 0:
                 print("Play")
                 play(topic_list)
-
             case 1:
                 print("Edit")
                 playquiz.print_title("Edit Options")

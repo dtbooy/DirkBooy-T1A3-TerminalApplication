@@ -13,7 +13,7 @@ import pyinputplus as pyip
 # getpass used to hide user input when asked to press enter to continue
 import getpass 
 
-def get_available_topics_from_dir() -> list:
+def get_topics_from_directory() -> list:
     # Read files in quiz directory
     dir_list = os.listdir("./quiz_data")
     quiz_list = []
@@ -37,7 +37,7 @@ def get_question_list_from_file(quiz_title: str) -> list:
             question_list.append(row)
     return question_list
 
-def get_user_input_new_question() -> list:
+def get_new_question_from_user_input() -> list:
     """
     Prompts user through writing a question. 
     Output is a question-answers list in the format [Q,CA,WA,WA,WA] 
@@ -65,7 +65,6 @@ def get_user_input_new_question() -> list:
             print("Question discarded!\n")
             # Repeat while loop if user wants to try again, otherwise
             # return to menu
-            #############ADD AN EDIT Q A A A A option here if time ##################################### -------------DEBUG
             if pyip.inputYesNo(
                 "\n would you like to try again?") == "no":
                 return None
@@ -74,18 +73,23 @@ def get_user_input_new_question() -> list:
 def write_new_question_to_file(topic: str) -> None:
     """Procedure: Gets new question, and appends it to topic file"""
     # Get question from user
-    question = get_user_input_new_question()
-    # Convert topic to filename 
-    filename = (
-        "./quiz_data/quiz_" + 
-        topic.lower().replace(" ", "_") + 
-        ".csv")
-    # Write question to file
-    with open(filename, 'a', newline='') as f:
-        writer = csv.writer(f) 
-        writer.writerows([question])
-    print("Success! Question added!")
-    getpass.getpass("Press Enter to continue...")
+    question = get_new_question_from_user_input()
+
+    if question is None:
+        # If write question discarded and cancelled return to menu
+        print("Write question cancelled")
+    else:
+        # Convert topic to filename 
+        filename = (
+            "./quiz_data/quiz_" + 
+            topic.lower().replace(" ", "_") + 
+            ".csv")
+        # Write question to file
+        with open(filename, 'a', newline='') as f:
+            writer = csv.writer(f) 
+            writer.writerows([question])
+        print("Success! Question added!")
+    getpass.getpass("Press Enter to return to menu...")
 
 def delete_question(topic: str) -> None:
     # Get list of questions in topic
@@ -104,7 +108,8 @@ def delete_question(topic: str) -> None:
     playquiz.clear_screen()
     playquiz.ask_question(question_list[del_q_index], del_q_index)    
     # confirmation of deletion
-    if pyip.inputYesNo("Is this the question you want to delete? [Y/N]") ==  "yes":
+    confirm = pyip.inputYesNo("Is this the question you want to delete? [Y/N]")
+    if confirm ==  "yes":
         # remove question from question_list
         question_list.remove(question_list[del_q_index])
         # write question_list to file
@@ -115,6 +120,7 @@ def delete_question(topic: str) -> None:
     getpass.getpass("Press Enter to continue...")
         
 def new_quiz_name(topic_list: list) ->str:
+    print(topic_list) ######        ---------------------------------------------------->DEBUG
     while True:
         topic = input("Please enter quiz title: ")
         if topic == None:
@@ -123,20 +129,22 @@ def new_quiz_name(topic_list: list) ->str:
         elif topic.replace(" ", "").isalnum() == False:
             # Ensure filename has no special character.
             print("Quiz title cannot contain special characters.")            
-        elif topic in topic_list:
+        elif topic.title() in topic_list:
             # Check if filename exists
             print("Quiz title cannot be the same as existing quiz.")
         else:
             return topic
           
 def new_quiz_topic(topic_list: str) -> None:
+    #print title
+    playquiz.print_title("New Quiz")
     # get name of new quiz
     topic = new_quiz_name(topic_list)
     question_list = []
     next_question = True
     while next_question == True:
         # Get question from user
-        success = get_user_input_new_question()
+        success = get_new_question_from_user_input()
         # If write_question was succesful append to list
         if success != None:
             question_list.append(success)
@@ -146,11 +154,13 @@ def new_quiz_topic(topic_list: str) -> None:
             next_question = False
     # If user hasn't entered anything return to menu loop
     if question_list == []:
-        return
-    # Save quizz to file
-    write_full_quiz_to_file(topic, question_list)
-    playquiz.clear_screen()
-    print("Success! New quiz was created")
+        playquiz.clear_screen()
+        print("New quiz creation failed: No questions added")
+    else:
+        # Save quizz to file
+        write_full_quiz_to_file(topic, question_list)
+        playquiz.clear_screen()
+        print("Success! New quiz was created")
     getpass.getpass("Press Enter to continue...")
 
 def write_full_quiz_to_file(topic: str, question_list: list):
