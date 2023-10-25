@@ -8,8 +8,10 @@ import os
 # time module used for delay timing 
 # may also be used for timeout of questions and scoring   --------------------->  DEBUG
 import time
-# getpass used to hide user input when asked to press enter to continue
-import getpass 
+# getpass used to hide user input for "press enter to continue" breaks
+import getpass
+#shutil module get_terminal_size() function to determine screen width
+import shutil
 
 def clear_screen() -> None:
     """
@@ -22,6 +24,19 @@ def clear_screen() -> None:
      # Linux: os.name == 'posix', sys clear command is "clear"
     else:
         os.system("clear")
+
+def print_title(title):
+    """ Print a decorated heading on the console from input string."""
+    # Determine screen width (redo each time incase screen size changes)
+    screen_width = min(100,list(shutil.get_terminal_size())[0])
+    # Detemine padding space each side of title
+    padding = max(int((screen_width - len(title) - 2)/2),0)
+    # Clear screen
+    clear_screen()
+    # print title padded by #'s with a line of -'s above and below
+    print("-" * screen_width)
+    print("#" * padding, title, "#" * padding  )
+    print("-" * screen_width)
 
 def question_selector(topic_questions: list) -> list:
     """
@@ -40,9 +55,9 @@ def question_selector(topic_questions: list) -> list:
 
 def ask_question(question: list, q_num: int) -> int:
     """
-    Takes a question & question number, prints to terminal.
-    Shuffles answer options and prints to terminal. 
-    Returns index of correct answer
+    Takes a question & question number, prints to terminal. Shuffles 
+    answer options and prints to terminal. 
+    Returns index of correct answer.
     """
     # Present question
     print(f"Question {q_num + 1}: {question[0]}")
@@ -83,12 +98,7 @@ def get_valid_answer() -> int:
                     "1, 2, 3, 4"
                     )
 
-def print_title(title):
-    clear_screen()
-    print("-" * 43)
-    padding = max(int((43 - len(title) - 2)/2),0)
-    print("#" * padding, title, "#" * padding  )
-    print("-" * 43, "\n")
+
 
 def quiz_round(topic: str):
     """Quiz handler: runs a round of quiz questions and tracks score"""

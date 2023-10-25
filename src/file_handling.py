@@ -1,7 +1,7 @@
-#----------------------------------------------------------------------|
 """
 Module to hand file handling for Quiz Terminal Application
 """
+#----------------------------------------------------------------------|
 #playquiz needed for clear_screen(), ask_question()
 import playquiz
 # csv module used to read / write quiz question files
@@ -14,6 +14,14 @@ import pyinputplus as pyip
 import getpass 
 
 def get_topics_from_directory() -> list:
+    # Check if directory exists 
+    if not os.path.exists("./quiz_data"):
+        # If directory doesn't exist, create directory & raise error
+        os.mkdir("./quiz_data") 
+        raise FileNotFoundError(
+            "Could not find quiz directory! Creating new directory: "
+            f"{os.getcwd()}/quiz_data/")
+    
     # Read files in quiz directory
     dir_list = os.listdir("./quiz_data")
     quiz_list = []
@@ -22,6 +30,11 @@ def get_topics_from_directory() -> list:
         if file.endswith(".csv") and file.startswith("quiz_"):
             #Format as title & add to list
             quiz_list.append(str(file[5:-4]).replace("_", " ").title())
+    #raise an error if no quizzes are found
+    if quiz_list == []:
+        raise FileNotFoundError("No quiz files found.") 
+    #sort quiz_list and return
+    quiz_list.sort()
     return quiz_list
 
 def get_question_list_from_file(quiz_title: str) -> list:
@@ -53,12 +66,13 @@ def get_new_question_from_user_input() -> list:
         playquiz.clear_screen()
 
         # display question to user
-        num = playquiz.ask_question(question, 1)
+        playquiz.print_title("Question Preview")
+        num = playquiz.ask_question(question, 0)
         print(
             f"\nThe correct answer is: \n"
             f"{chr(ord('@') + num)}: {question[1]}")
         # confirm correct
-        if pyip.inputYesNo("\n is this correct?") == "yes":
+        if pyip.inputYesNo("\nDo you want to add this question? [Y/N]: ") == "yes":
             print("Question added!\n")
             return question
         else:
@@ -66,18 +80,16 @@ def get_new_question_from_user_input() -> list:
             # Repeat while loop if user wants to try again, otherwise
             # return to menu
             if pyip.inputYesNo(
-                "\n would you like to try again?") == "no":
-                return None
-            ########NEED to catch this - perhaps it should raise an error ---------------------------------->DEBUG
+                "Would you like to try again? [Y/N] ") == "no":
+                raise ValueError("Add question process cancelled")
 
 def write_new_question_to_file(topic: str) -> None:
     """Procedure: Gets new question, and appends it to topic file"""
     # Get question from user
-    question = get_new_question_from_user_input()
-
-    if question is None:
-        # If write question discarded and cancelled return to menu
-        print("Write question cancelled")
+    try:
+        question = get_new_question_from_user_input()
+    except ValueError as err_msg:
+        print(f"Question creation failed: {err_msg}")
     else:
         # Convert topic to filename 
         filename = (
@@ -88,21 +100,21 @@ def write_new_question_to_file(topic: str) -> None:
         with open(filename, 'a', newline='') as f:
             writer = csv.writer(f) 
             writer.writerows([question])
-        print("Success! Question added!")
-    getpass.getpass("Press Enter to return to menu...")
+        playquiz.print_title("Success! Question saved!")
+    finally:
+        getpass.getpass("Press Enter to return to menu...")
 
 def delete_question(topic: str) -> None:
     # Get list of questions in topic
     question_list = get_question_list_from_file(topic)
-
     # print out all questions in numbered list
     print(f"Questions in {topic}:")
     for i, question in enumerate(question_list):
-        print(f"{i+1}. {question}[0]")
+        print(f"{i+1}. {question[0]}")
 
     # select question number to delete
     del_q_index = pyip.inputInt(
-        "Select question number to delete :", 
+        "Select question number to delete: ", 
         min=1, max=len(question_list)) -1
     # display q & a for selected q
     playquiz.clear_screen()
@@ -117,13 +129,21 @@ def delete_question(topic: str) -> None:
         print("Question deleted successfully")
     else:
         print("Cancelled deletion!")
+    # If no questions in quiz, delete quiz file
+    if question_list == []:
+        print("That was the last question in the quiz. Deleting quiz file.")
+        filename = (
+            "./quiz_data/quiz_" + topic.lower().replace(" ", "_") + ".csv")
+        os.remove(filename)
+        
+
+
     getpass.getpass("Press Enter to continue...")
         
 def new_quiz_name(topic_list: list) ->str:
-    print(topic_list) ######        ---------------------------------------------------->DEBUG
     while True:
         topic = input("Please enter quiz title: ")
-        if topic == None:
+        if topic == "":
             # Ensure user has entered a name
             print("Quiz title cannot be blank.")
         elif topic.replace(" ", "").isalnum() == False:
@@ -143,25 +163,29 @@ def new_quiz_topic(topic_list: str) -> None:
     question_list = []
     next_question = True
     while next_question == True:
-        # Get question from user
-        success = get_new_question_from_user_input()
-        # If write_question was succesful append to list
-        if success != None:
-            question_list.append(success)
+        try:
+            # Get question from user
+            new_question = get_new_question_from_user_input()
+        except ValueError as err_msg:
+            print(f"Question creation failed: {err_msg}")
+        else:
+            # If write_question was succesful append to list
+            question_list.append(new_question)
+        finally:
         # If user is finished set while loop flag to false
-        if pyip.inputYesNo(
-            "Would you like to Enter another question?") == "no":
-            next_question = False
+            if pyip.inputYesNo(
+                "Would you like to enter another question?") == "no":
+                next_question = False
+    
     # If user hasn't entered anything return to menu loop
     if question_list == []:
         playquiz.clear_screen()
-        print("New quiz creation failed: No questions added")
+        print("New quiz creation cancelled: No questions added")
     else:
         # Save quizz to file
         write_full_quiz_to_file(topic, question_list)
-        playquiz.clear_screen()
-        print("Success! New quiz was created")
-    getpass.getpass("Press Enter to continue...")
+        playquiz.print_title("Success! New quiz was created")
+    getpass.getpass("\nPress Enter to continue...")
 
 def write_full_quiz_to_file(topic: str, question_list: list):
     # Convert topic to filename 
