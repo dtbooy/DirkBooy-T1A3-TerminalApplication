@@ -75,32 +75,70 @@ The features have been broken down into component cards, each has been assigned 
 
 ### Screenshots of plan over course of project
 #### 19 October 2023: 
-Project Board
+##### Project Board - 19 October 2023
 ![2023/10/19 Project Board](./docs/20231019-board.png)
-Project Status Chart
+##### Project Status Chart - 19 October 2023
 ![2023/10/19 Project Status Chart](./docs/20231019-chart.png)
-Daily task cards
+##### Daily task cards - 19 October 2023
 ![2023/10/19 My cards Status](./docs/20231019-mytasks.png)
 #### 20 October 2023:
-Project Board
-![2023/10/20 Project Board](./docs/20231019-board.png)
-Project Status Chart
-![2023/10/20 Project Status Chart](./docs/20231019-chart.png)
-Daily task cards
-![2023/10/20 My cards Status](./docs/20231019-mytasks.png)
+##### Project Board - 20 October 2023
+![2023/10/20 Project Board](./docs/20231020-board.png)
+##### Project Status Chart - 20 October 2023
+![2023/10/20 Project Status Chart](./docs/20231020-chart.png)
+##### Daily task cards - 20 October 2023
+![2023/10/20 My cards Status](./docs/20231020-mytasks.png)
 #### 21 October 2023:
+##### Project Board - 21 October 2023
+![2023/10/21 Project Board](./docs/20231021-board.png)
+##### Project Status Chart - 21 October 2023
+![2023/10/21 Project Status Chart](./docs/20231021-chart.png)
+##### Daily task cards - 21 October 2023
+![2023/10/21 My cards Status](./docs/20231021-mytasks.png)
 #### 22 October 2023:
+##### Project Board - 22 October 2023
+![2023/10/22 Project Board](./docs/20231022-board.png)
+##### Project Status Chart - 22 October 2023
+![2023/10/22 Project Status Chart](./docs/20231022-chart.png)
+##### Daily task cards - 22 October 2023
+![2023/10/22 My cards Status](./docs/20231022-mytasks.png)
 #### 23 October 2023:
+##### Project Board - 23 October 2023
+![2023/10/23 Project Board](./docs/20231023-board.png)
+##### Project Status Chart - 23 October 2023
+![2023/10/23 Project Status Chart](./docs/20231023-chart.png)
+##### Daily task cards - 23 October 2023
+![2023/10/23 My cards Status](./docs/20231023-mytasks.png)
 #### 24 October 2023:
+##### Project Board - 24 October 2023
+![2023/10/24 Project Board](./docs/20231024-board.png)
+##### Project Status Chart - 24 October 2023
+![2023/10/24 Project Status Chart](./docs/20231024-chart.png)
+##### Daily task cards - 24 October 2023
+![2023/10/24 My cards Status](./docs/20231024-mytasks.png)
 #### 25 October 2023:
+##### Project Board - 25 October 2023
+![2023/10/25 Project Board](./docs/20231025-board.png)
+##### Project Status Chart - 25 October 2023
+![2023/10/25 Project Status Chart](./docs/20231025-chart.png)
+##### Daily task cards - 25 October 2023
+![2023/10/25 My cards Status](./docs/20231025-mytasks.png)
 #### 26 October 2023:
-
+##### Project Board - 26 October 2023
+![2023/10/26 Project Board](./docs/20231026-board.png)
+##### Project Status Chart - 26 October 2023
+![2023/10/26 Project Status Chart](./docs/20231026-chart.png)
+##### Daily task cards - 26 October 2023
+![2023/10/26 My cards Status](./docs/20231026-mytasks.png)
 
 ## Help Documentation
 
 ### Installation
+xx
 
 ### Requirements
+
+
 
 ### Startup
 
@@ -117,3 +155,17 @@ Daily task cards
 Style Guide used python code in this project is [PEP 8](https://peps.python.org/pep-0008/)
 
 ## References
+
+## Checklist -  Documentation
+| R | Description | Done |
+| - | - | - |
+| R1 | Answers to all the documentation requirements below. |  |
+| R2 | Your README.md should have a separate heading for each documentation requirement and answers organised under the appropriate headings. | Y |
+| R3 | Provide full attribution to referenced sources (where applicable). |  |
+| R4 | Provide a link to your source control repository | Y |
+| R5 | Identify any code style guide. | Y |
+| R6 | Develop a list of features that will be included in the application. | Y |
+| R7 | Develop an implementation Plan | Y |
+| R8 | Design help documentation, inc use and installation |  |
+
+
