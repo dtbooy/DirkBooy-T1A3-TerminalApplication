@@ -132,9 +132,7 @@ def delete_question(topic: str) -> None:
     # If no questions in quiz, delete quiz file
     if question_list == []:
         print("That was the last question in the quiz. Deleting quiz file.")
-        filename = (
-            "./quiz_data/quiz_" + topic.lower().replace(" ", "_") + ".csv")
-        os.remove(filename)
+        delete_quiz_file(None, topic)
         
 
 
@@ -203,6 +201,14 @@ def write_full_quiz_to_file(topic: str, question_list: list):
                 "Wrong Answer 3"]) # Write the header row first
         writer.writerows(question_list)
 
+def delete_quiz_file(topic: str) -> None:
+    
+    # Convert topic to filename
+    filename = (
+            "./quiz_data/quiz_" + topic.lower().replace(" ", "_") + ".csv")
+    
+    # Delete file
+    os.remove(filename)
 
 
 

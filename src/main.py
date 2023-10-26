@@ -48,9 +48,6 @@ def main() -> None:
     playquiz.clear_screen()
     #Add static menu items to lists
     top_level_menu = ["Play", "Edit Mode", "Help", "Credits", "Quit"]
-    edit_menu = ["Edit Existing Quiz", "Create New Quiz"]
-
-
     while True:
         # Get list of topics (refreshes each menu reload)
         try:
@@ -76,18 +73,9 @@ def main() -> None:
         choice = menu_select(top_level_menu)
         match choice:
             case 0:
-                print("Play")
                 play(topic_list)
             case 1:
-                print("Edit")
-                playquiz.print_title("Edit Options")
-                choice = menu_select(edit_menu)
-                #new create new quiz
-                if choice == 1:
-                    file_handling.new_quiz_topic(topic_list)
-                #edit existing quiz
-                else:
-                    edit(topic_list)
+                edit(topic_list)
             case 2:
                 print("Help")
                 help_menu()
@@ -108,20 +96,41 @@ def play(topic_list):
     playquiz.quiz_round(topic_list[topic_index])
 
 def edit(topic_list):
-    edit_quiz_menu = ["Add Question", "Delete Question"]
-    # Select quiz to edit    
-    playquiz.print_title("Select quiz to edit")
-    topic_index = select_topic(topic_list)
-
-    playquiz.print_title("Add or Delete a question?")
-    if menu_select(edit_quiz_menu) == 0:
-        # launch question writed function
-        playquiz.print_title("New Question")
-        file_handling.write_new_question_to_file(topic_list[topic_index])
+    edit_menu_1 = ["Edit Existing Quiz", "Create New Quiz", "Delete Quiz"]
+    edit_menu_2 = ["Add Question", "Delete Question"]
+    playquiz.print_title("Edit Options")
+    choice = menu_select(edit_menu_1)
+    # Create new quiz
+    if choice == 1:
+        file_handling.new_quiz_topic(topic_list)
+    # Delete Quiz
+    if choice == 2:
+        playquiz.print_title("Delete quiz")
+        # Select quiz to delete
+        print("Select quiz to delete")
+        topic = topic_list[select_topic(topic_list)]
+        # Confirm deletion
+        if pyip.inputYesNo(
+            f"Are you sure you want to delete quiz:{topic}? [Y/N]") == "yes":
+                # Delete quiz
+                file_handling.delete_quiz_file(topic)
+        else:
+            getpass.getpass("Cancelled deletion of quiz. Press enter to return to menu.")
     else:
-        #launch delete question function
-        playquiz.print_title("Delete Question")
-        file_handling.delete_question(topic_list[topic_index])
+        # Edit existing quiz
+        # Select quiz to edit
+        playquiz.print_title("Select quiz to edit")
+        topic_index = select_topic(topic_list)
+        # Add or Delete Question Menu
+        playquiz.print_title("Add or Delete a question?")
+        if menu_select(edit_menu_2) == 0:
+            # launch question writed function
+            playquiz.print_title("New Question")
+            file_handling.write_new_question_to_file(topic_list[topic_index])
+        else:
+            #launch delete question function
+            playquiz.print_title("Delete Question")
+            file_handling.delete_question(topic_list[topic_index])
 
 def help_menu():
     help_menu_items = [
