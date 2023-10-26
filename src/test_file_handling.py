@@ -10,11 +10,14 @@ def test_read_write_file():
     3. check that the newly generated quiz appears in the topics list 
     4. read the quiz from file back into the program and compare it
        to the original generated quiz.
+    5. delete the generated quiz file
+    6. confirm all changes have beeen reverted
     
     It will test the following functions in file_handling.py:
     1. write_full_quiz_to_file(topic: str, question_list: list):
-    3. get_topics_from_directory()
-    2. get_question_list_from_file(quiz_title: str)   
+    2. get_topics_from_directory()
+    3. get_question_list_from_file(quiz_title: str)   
+    4. delete_quiz_file(topic: str)
     """
 
     #generate a list of template questions
@@ -33,17 +36,20 @@ def test_read_write_file():
     assert gen_topic not in original_topic_list
     # Write generated quiz to file
     file_handling.write_full_quiz_to_file(gen_topic, gen_q_list)
-    # Get updated topic list from dir
+    # Get updated topic list from directory
     new_topic_list = file_handling.get_topics_from_directory()
     # TEST: gen_topic should now be in topic list
     assert gen_topic in new_topic_list
-    # read generated quiz file
+    # Read generated quiz file
     file_q_list = file_handling.get_question_list_from_file(gen_topic)
-    # TEST list read from file equals the original generated list
+    # TEST: list read from file equals the original generated list
     assert file_q_list == gen_q_list
-
-    # delete temporary test file
-    os.remove("./quiz_data/quiz_generated_questions_topic.csv")
+    # Delete temporary test file
+    file_handling.delete_quiz_file(gen_topic)
+    # Get final topic list from directory
+    final_topic_list = file_handling.get_topics_from_directory()
+    # TEST: confirm quiz has been deleted successfully
+    assert final_topic_list == original_topic_list
 
 def test_edit_file(monkeypatch):
     """
