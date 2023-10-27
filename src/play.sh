@@ -8,19 +8,17 @@ then
   exit 1
 fi
 
-# check python version >3.1 -> update
-
-# 2. Check PIP installed ->if not install
-
-
-# #3. install venv in quiz folder
+# #2. install venv in quiz folder
 # echo "Activating Python virtual environment"
 # python3 -m venv .venv
 # source .venv/bin/activate
 
-# #4. install required packages from requirements.txt
+# #3. install required packages from requirements.txt
 # echo "Installing required packages from requirements.txt"
 # pip install -r requirements.txt
+
+# 4. Make sure quiz files are in read-write mode 
+chmod 666 ./quiz_data/quiz_*
 
 #5. Open the quiz program
 python3 main.py

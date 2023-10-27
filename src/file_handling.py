@@ -43,11 +43,19 @@ def get_question_list_from_file(quiz_title: str) -> list:
         quiz_title.lower().replace(" ", "_") + 
         ".csv")
     question_list = []
+    error_count = 0
     with open(filename, 'r') as f:
         reader = csv.reader(f)
         reader.__next__() # Skip the first row (the column names)
         for row in reader:
-            question_list.append(row)
+            # Ensure there are 5 items in row: 1 Question + 4 answers
+            if len(row) == 5:
+                question_list.append(row)
+            else:
+                error_count += 1
+    if error_count > 0:
+        print(f"Warning - {error_count} question items were in incorrect format and removed from quiz")
+        getpass.getpass("Press enter to continue...")
     return question_list
 
 def get_new_question_from_user_input() -> list:
@@ -100,6 +108,7 @@ def write_new_question_to_file(topic: str) -> None:
         with open(filename, 'a', newline='') as f:
             writer = csv.writer(f) 
             writer.writerows([question])
+            # Need to add validation ensure question is written to file ------------------------------------------------------------- DEBUG
         playquiz.print_title("Success! Question saved!")
     finally:
         getpass.getpass("Press Enter to return to menu...")
