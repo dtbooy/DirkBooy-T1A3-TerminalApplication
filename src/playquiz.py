@@ -103,6 +103,8 @@ def quiz_round(topic: str):
     """Quiz handler: runs a round of quiz questions and tracks score"""
     # reset score counter
     round_score = 0
+    #reset correct counter
+    correct_counter = 0
     # reset wrong questions
     wrong_questions = []
     # get question list
@@ -115,25 +117,35 @@ def quiz_round(topic: str):
         print_title(topic)
         # Display Question
         ans_loc = ask_question(question, index)
-
+        #start question timer
+        start = time.time()
         # Get response from user
         user_resp = get_valid_answer()
-
+        # Calculate response time
+        ans_time = round(time.time() - start)
         # Check - is user correct- if so give a point
         if ans_loc == user_resp:
-            round_score += 1
-            print("Correct! Well Done!")
+            # Calculate points
+            points = max(1, 11 - (ans_time))
+            # add points to score
+            round_score += points
+            correct_counter += 1
+            print(
+                f"Correct! You answered in {ans_time} seconds and get "
+                f"{points} points")
             print(ans_loc)
         else:
             print("Wrong answer!") 
             wrong_questions.append(index)
             print(f"The correct answer was: {question[1]}")
-        # wait before next question starts
-        time.sleep(2)
+        # Press enter to start next question
+        getpass.getpass("Press Enter to continue...")
     #End of Quiz display results
     print_title("Results")
-    print(f"You scored {round_score} / {len(round_questions)}!\n")
-    if round_score == len(round_questions):
+    print(
+        f"You got {correct_counter} / {len(round_questions)} correct, "
+        f"scoring {round_score} points!\n")
+    if correct_counter == len(round_questions):
         #print a special message for getting 10/10
         print(
             "    ________            ________          ___________\n"
@@ -143,7 +155,7 @@ def quiz_round(topic: str):
             "    /_/     \___//_/    /_/    \___/\___/ \__/ (_) \n\n\n"
             )
     else:
-        # Display the questions and answers teh user got wrong for review
+        # Display the questions the user got wrong for review
         print("You got the following question wrong:")
         for i in wrong_questions:
             print(f"Question {i+1}:")
