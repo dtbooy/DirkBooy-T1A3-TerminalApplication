@@ -166,8 +166,12 @@ def credits():
 
 def help_how_to_play():
     """testing to see if this is called in the help function"""
-    
-main()
+
+try:
+    main()
+except KeyboardInterrupt:
+    playquiz.print_title("Goodbye! Thanks for playing")
+
 #----------------------------------------------------------------------|
 #TESTING
 # select_topic(file_handling.get_available_topics_from_dir())
