@@ -7,6 +7,7 @@ import file_handling # handles read/write to file
 import pyinputplus as pyip
 import getpass # Hides user input in terminal 
 import os
+import json
 
 def select_topic(topic_list: list) -> int:
     for i, topic in enumerate(topic_list):
@@ -47,7 +48,7 @@ def main() -> None:
     """Main navigation loop"""
     playquiz.clear_screen()
     #Add static menu items to lists
-    top_level_menu = ["Play", "Edit Mode", "Help", "Credits", "Quit"]
+    top_level_menu = ["Play", "Edit Mode", "Help", "Quit"]
     while True:
         # Get list of topics (refreshes each menu reload)
         try:
@@ -82,8 +83,6 @@ def main() -> None:
                 help_menu()
                  #  ---------------------------------------------------------->DEBUG
             case 3:
-                credits()
-            case 4:
                 playquiz.print_title("Goodbye! Thanks for playing")
                 break
 
@@ -139,25 +138,48 @@ def edit(topic_list):
 def help_menu():
     help_menu_items = [
         "How to Play", 
-        "How to Edit", 
-        "Get more quizes", 
+        "Add a question to a quiz", 
+        "Delete a question to a quiz", 
+        "Create a new quiz",
+        "Delete a quiz",
         "Return to menu"]
-    playquiz.print_title("Help")
-    print("what do you need help with?")
-    choice = menu_select(help_menu_items)
-    match choice:
-        case 0:
-            # How to play
-            help(help_how_to_play)
-        case 1:
-            #How to edit
-            pass
-        case 2:
-            # get more quizes - link to website?
-            pass
-        case _:
-            #Do nothing - return to menu loop
-            pass
+    # Load help topics from file to dictionary
+    with open('help_files.json', 'r') as f:
+        # Read help_dictionary from file
+        help_dictionary = json.load(f)
+    while True:
+        playquiz.print_title("Help")
+        print("what do you need help with?")
+        choice = menu_select(help_menu_items)
+        match choice:
+            case 0:
+                # How to play
+                playquiz.print_title("How to quiz!")
+                print(help_dictionary["Play"])
+                getpass.getpass("Press Enter to continue...")
+            case 1:
+                # Add a question
+                playquiz.print_title("Add questions to a quiz")
+                print(help_dictionary["Add Question"])
+                getpass.getpass("Press Enter to continue...")
+            case 2:
+                # Delete a question
+                playquiz.print_title("Delete a question from a quiz")
+                print(help_dictionary["Delete Question"])
+                getpass.getpass("Press Enter to continue...")
+            case 3:
+                # Create New Quiz
+                playquiz.print_title("Make your own quiz")
+                print(help_dictionary["New Quiz"])
+                getpass.getpass("Press Enter to continue...")
+            case 4:
+                # Delete Quiz
+                playquiz.print_title("Delete a quiz")
+                print(help_dictionary["Delete Quiz"])
+                getpass.getpass("Press Enter to continue...")
+            case 5:
+                #Return to menu loop
+                break
 
 def credits():
     playquiz.print_title("Credits")
