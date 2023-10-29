@@ -57,7 +57,7 @@ def get_question_list_from_file(quiz_title: str) -> list:
                 error_count += 1
     if error_count > 0:
         print(
-            f"Warning - {error_count} question items were in incorrect"
+            f"Warning - {error_count} question/s were in incorrect"
             " format and removed from quiz")
         getpass.getpass("Press enter to continue...")
     return question_list
@@ -113,7 +113,6 @@ def write_new_question_to_file(topic: str) -> None:
         with open(filename, 'a', newline='') as f:
             writer = csv.writer(f)
             writer.writerows([question])
-            # Need to add validation ensure question is written to file ------------------------------------------------------------- DEBUG
         playquiz.print_title("Success! Question saved!")
     finally:
         getpass.getpass("Press Enter to return to menu...")
@@ -132,10 +131,11 @@ def delete_question(topic: str) -> None:
         "Select question number to delete: ",
         min=1, max=len(question_list)) - 1
     # Display Q&As for selected question
-    playquiz.clear_screen()
+    playquiz.print_title("Delete Question")
     playquiz.ask_question(question_list[del_q_index], del_q_index)
     # confirmation of deletion
-    confirm = pyip.inputYesNo("Is this the question you want to delete? [Y/N]")
+    confirm = pyip.inputYesNo(
+        "\nIs this the question you want to delete? [Y/N]")
     if confirm == "yes":
         # remove question from question_list
         question_list.remove(question_list[del_q_index])
@@ -203,7 +203,7 @@ def new_quiz_topic(topic_list: str) -> None:
     getpass.getpass("\nPress Enter to continue...")
 
 
-def write_full_quiz_to_file(topic: str, question_list: list):
+def write_full_quiz_to_file(topic: str, question_list: list) -> None:
     # Convert topic to filename
     filename = ("./quiz_data/quiz_" +
                 topic.lower().replace(" ", "_") +

@@ -14,17 +14,8 @@ import os
 import json
 
 
-def select_topic(topic_list: list) -> int:
-    for i, topic in enumerate(topic_list):
-        print(f"{i+1}. {topic}")
-    # return user choice as # index in topic_list
-    return pyip.inputInt(
-        "\nSelect topic number:",
-        min=1, max=len(topic_list)) - 1
-
-
 def menu_select(menu_items: list) -> int:
-    """Get valid user selection from menu. Return menu list index"""
+    """Gets valid user selection from menu. Return menu list index"""
     while True:
         # Print menu (numbered)
         for i, option in enumerate(menu_items):
@@ -53,7 +44,7 @@ def menu_select(menu_items: list) -> int:
             "Please enter a menu number or name.\n")
 
 
-def main() -> None:
+def main_menu() -> None:
     """Main navigation loop"""
     playquiz.clear_screen()
     # Add static menu items to lists
@@ -84,9 +75,9 @@ def main() -> None:
         choice = menu_select(top_level_menu)
         match choice:
             case 0:
-                play(topic_list)
+                play_menu(topic_list)
             case 1:
-                edit(topic_list)
+                edit_menu(topic_list)
             case 2:
                 print("Help")
                 help_menu()
@@ -95,7 +86,16 @@ def main() -> None:
                 break
 
 
-def play(topic_list):
+def select_topic(topic_list: list) -> int:
+    for i, topic in enumerate(topic_list):
+        print(f"{i+1}. {topic}")
+    # return user choice as # index in topic_list
+    return pyip.inputInt(
+        "\nSelect topic number:",
+        min=1, max=len(topic_list)) - 1
+
+
+def play_menu(topic_list) -> None:
     # Quiz topic selection
     playquiz.print_title("Select a quiz")
     print(f"Please select a Quiz topic:")
@@ -104,7 +104,7 @@ def play(topic_list):
     playquiz.quiz_round(topic_list[topic_index])
 
 
-def edit(topic_list):
+def edit_menu(topic_list) -> None:
     edit_menu_1 = ["Edit Existing Quiz", "Create New Quiz", "Delete Quiz"]
     edit_menu_2 = ["Add Question", "Delete Question"]
     playquiz.print_title("Edit Options")
@@ -150,7 +150,7 @@ def edit(topic_list):
                     " menu.")
 
 
-def help_menu():
+def help_menu() -> None:
     help_menu_items = [
         "How to Play",
         "Add a question to a quiz",
@@ -197,8 +197,10 @@ def help_menu():
                 break
 
 
-# Initiate Menu
-try:
-    main()
-except KeyboardInterrupt:
-    playquiz.print_title("Goodbye! Thanks for playing")
+# Initiate Main Menu
+if __name__ == "__main__":
+    try:
+        main_menu()
+        # Catch Keyboard Interupts
+    except KeyboardInterrupt:
+        playquiz.print_title("Goodbye! Thanks for playing")

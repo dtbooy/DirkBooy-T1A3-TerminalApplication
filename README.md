@@ -37,15 +37,19 @@ Navigation chains for the program will be as follows:
 * Play quiz
     * Topic selection --> start quiz
 * Edit quiz
-    * Add new quiz topic --> start new quiz & question add function
     * edit existing
         * select topic
             * add question --> add question function
             * remove question --> remove question 
+    * Add new quiz topic --> start new quiz & question add function
+    * Delete a quiz --> delete quiz file
 * Help
     * How to play --> displays help topic
+    * How to Add a question to a quiz,--> displays help topic
+    * How to Delete a question to a quiz,--> displays help topic
+    * How to Create a new quiz,--> displays help topic
+    * How to Delete a quiz,--> displays help topic
     * How to edit --> displays help topic
-* Credits --> Displays Credits
 * Quit --> terminates program
 
 ### Product Testing
@@ -69,7 +73,9 @@ Install script will:
 
 ## Implementation Plan
 An implementation plan has been developed for this project in MS Planner.
-To view the implementation plan on MS Planner follow this link: [https://tasks.office.com/coderacademy.edu.au/Home/PlanViews/MN5oAS6OQkuomEOswzAJbQgAGgfe?Type=PlanLink&Channel=Link&CreatedTime=638332964113580000](https://tasks.office.com/coderacademy.edu.au/Home/PlanViews/MN5oAS6OQkuomEOswzAJbQgAGgfe?Type=PlanLink&Channel=Link&CreatedTime=638332964113580000)
+To view the implementation plan on MS Planner follow this link: [https://tasks.office.com/coderacademy.edu.au/Home/PlanViews/MN5oAS6OQkuomEOswzAJbQgAGgfe?Type=PlanLink&Channel=Link&CreatedTime=638332964113580000](https://tasks.office.com/coderacademy.edu.au/Home/PlanViews/MN5oAS6OQkuomEOswzAJbQgAGgfe?Type=PlanLink&Channel=Link&CreatedTime=638332964113580000).  
+
+Alternatively an excel export of the MS Planner Workplan is in the docs folder here: [DirkBooy-T1A3-Workplan-export.pdf](./docs/DirkBooy-T1A3-Workplan-export.pdf)
 
 The features have been broken down into component cards, each has been assigned a priority and a planned completion date. As the project matures the priorities and forecast completion dates of individual elements will change.
 

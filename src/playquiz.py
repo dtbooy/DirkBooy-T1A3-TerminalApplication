@@ -157,7 +157,7 @@ def quiz_round(topic: str):
         #         ___  __  ______________  __/____________  /___  /
         #         __  /_/ /  _  _  ___/_  /_ _  _    ___/  __/_  /
         #         _  ____//  __/  /   _  __/ /  __/ /__ / /_  /_/
-        #         /_/      ___//_/    /_/     ___/ ___/  __/ (_) """)
+        #         /_/      ___//_/    /_/     ___/ ___/  __/ (_) \n""")
     else:
         # Display the questions the user got wrong for review
         print("You got the following question wrong:")
