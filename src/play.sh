@@ -18,7 +18,7 @@ echo Done!
 
 # #3. install required packages from requirements.txt
 echo "Checking for required packages from requirements.txt"
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 echo Done!
 
 # 4. Make sure quiz files are in read-write mode 

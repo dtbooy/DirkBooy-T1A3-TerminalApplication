@@ -153,11 +153,11 @@ def quiz_round(topic: str):
     if correct_counter == len(round_questions):
         # Print a special message for getting 10/10.
         print("""
-                ________            ________          ___________
-                ___  __ \______________  __/____________  /___  /
-                __  /_/ /  _ \_  ___/_  /_ _  _ \  ___/  __/_  /
-                _  ____//  __/  /   _  __/ /  __/ /__ / /_  /_/
-                /_/     \___//_/    /_/    \___/\___/ \__/ (_) """)
+        #         ________            ________          ___________
+        #         ___  __  ______________  __/____________  /___  /
+        #         __  /_/ /  _  _  ___/_  /_ _  _    ___/  __/_  /
+        #         _  ____//  __/  /   _  __/ /  __/ /__ / /_  /_/
+        #         /_/      ___//_/    /_/     ___/ ___/  __/ (_) """)
     else:
         # Display the questions the user got wrong for review
         print("You got the following question wrong:")
