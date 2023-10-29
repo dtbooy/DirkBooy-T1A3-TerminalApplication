@@ -97,7 +97,7 @@ def get_new_question_from_user_input() -> list:
 
 
 def write_new_question_to_file(topic: str) -> None:
-    """Procedure: Gets new question, and appends it to topic file"""
+    """Gets new question, and appends it to quiz file"""
     # Get question from user
     try:
         question = get_new_question_from_user_input()
@@ -119,6 +119,7 @@ def write_new_question_to_file(topic: str) -> None:
 
 
 def delete_question(topic: str) -> None:
+    """Deletes question from quiz question file"""
     # Get list of questions in topic
     question_list = get_question_list_from_file(topic)
     # print out all questions in numbered list
@@ -152,6 +153,7 @@ def delete_question(topic: str) -> None:
 
 
 def new_quiz_name(topic_list: list) -> str:
+    """Gets a valid new quiz name from user input"""
     while True:
         print(
             "Note: Quiz title must be unique, and cannot contain "
@@ -171,6 +173,7 @@ def new_quiz_name(topic_list: list) -> str:
 
 
 def new_quiz_topic(topic_list: str) -> None:
+    """Guides user through process of creating new quiz"""
     # Print title
     playquiz.print_title("New Quiz")
     # get name of new quiz
@@ -204,6 +207,7 @@ def new_quiz_topic(topic_list: str) -> None:
 
 
 def write_full_quiz_to_file(topic: str, question_list: list) -> None:
+    """Takes quiz name and question list and writes them to a new quiz file"""
     # Convert topic to filename
     filename = ("./quiz_data/quiz_" +
                 topic.lower().replace(" ", "_") +
@@ -223,7 +227,7 @@ def write_full_quiz_to_file(topic: str, question_list: list) -> None:
 
 
 def delete_quiz_file(topic: str) -> None:
-
+    """Deletes file from directory"""
     # Convert topic to filename
     filename = (
             "./quiz_data/quiz_" +
