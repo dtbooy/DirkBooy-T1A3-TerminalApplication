@@ -1,6 +1,7 @@
 #----------------------------------------------------------------------|
 # Imports
 import file_handling
+
 # random module used to randomise question selection & shuffle answers
 import random
 # os module used to detect Operating System & clear terminal screen 
@@ -25,7 +26,7 @@ def clear_screen() -> None:
     else:
         os.system("clear")
 
-def print_title(title):
+def print_title(title: str) -> None:
     """ Print a decorated heading on the console from input string."""
     # Determine screen width (redo each time incase screen size changes)
     screen_width = min(100,list(shutil.get_terminal_size())[0])
@@ -98,13 +99,13 @@ def get_valid_answer() -> int:
                     "1, 2, 3, 4"
                     )
 
-
-
 def quiz_round(topic: str):
     """Quiz handler: runs a round of quiz questions and tracks score"""
     # reset score counter
     round_score = 0
-        # get question list
+    # reset wrong questions
+    wrong_questions = []
+    # get question list
     topic_questions_list = (
         file_handling.get_question_list_from_file(topic))
 
@@ -125,13 +126,14 @@ def quiz_round(topic: str):
             print(ans_loc)
         else:
             print("Wrong answer!") 
+            wrong_questions.append(index)
             print(f"The correct answer was: {question[1]}")
         # wait before next question starts
         time.sleep(2)
-        # Clear screen for next question
-        clear_screen()
     #End of Quiz display results
-    if round_score == 10:
+    print_title("Results")
+    print(f"You scored {round_score} / {len(round_questions)}!\n")
+    if round_score == len(round_questions):
         #print a special message for getting 10/10
         print(
             "    ________            ________          ___________\n"
@@ -140,7 +142,15 @@ def quiz_round(topic: str):
             "    _  ____//  __/  /   _  __/ /  __/ /__ / /_  /_/ \n"
             "    /_/     \___//_/    /_/    \___/\___/ \__/ (_) \n\n\n"
             )
-    print(f"You scored {round_score} / {len(round_questions)}!")
+    else:
+        # Display the questions and answers teh user got wrong for review
+        print("You got the following question wrong:")
+        for i in wrong_questions:
+            print(f"Question {i+1}:")
+            print(round_questions[i][0])
+            print ("The correct answer was:")
+            print(round_questions[i][1], "\n")
+
     getpass.getpass("Press Enter to continue...")
 
 
